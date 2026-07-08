@@ -60,3 +60,5 @@ const sendMail = async (name, email, subject, message) => {
 };
 
 module.exports = sendMail;
+
+
