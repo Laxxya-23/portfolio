@@ -455,42 +455,41 @@ if (contactForm) {
 
         };
 
-        try {
+ try {
 
-            fetch("https://lnportfolio.onrender.com/api/contact", {
+    const response = await fetch("https://lnportfolio.onrender.com/api/contact", {
 
-                method: "POST",
+        method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-                body: JSON.stringify(formData)
+        body: JSON.stringify(formData)
 
-            });
+    });
 
-            const data = await response.json();
+    const data = await response.json();
 
-            if (data.success) {
+    if (data.success) {
 
-                alert("✅ Message Sent Successfully!");
+        alert("✅ Message Sent Successfully!");
 
-                contactForm.reset();
+        contactForm.reset();
 
-            } else {
+    } else {
 
-                alert("❌ " + data.message);
+        alert("❌ " + data.message);
 
-            }
+    }
 
-        } catch (error) {
+} catch (error) {
 
-            console.error(error);
+    console.error(error);
 
-            alert("❌ Server Error");
+    alert("❌ Server Error");
 
-        }
-
+}
         submitBtn.innerText = "Send Message";
         submitBtn.disabled = false;
 
