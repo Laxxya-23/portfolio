@@ -13,7 +13,7 @@ exports.createContact = async (req, res) => {
             });
         }
 
-        // Save to MongoDB
+        // Save data in MongoDB
         const contact = await Contact.create({
             name,
             email,
@@ -21,20 +21,21 @@ exports.createContact = async (req, res) => {
             message
         });
 
-        // Try sending email (don't fail if SMTP fails)
-        try {
-            await sendMail(name, email, subject, message);
-            console.log("✅ Email sent successfully");
-        } catch (mailError) {
-            console.error("❌ Email Error:", mailError.message);
-            // Ignore email error so website still works
-        }
-
-        return res.status(201).json({
+        // Send response immediately
+        res.status(201).json({
             success: true,
             message: "Message sent successfully",
             data: contact
         });
+
+        // Send email in background
+        sendMail(name, email, subject, message)
+            .then(() => {
+                console.log("✅ Email sent successfully");
+            })
+            .catch((err) => {
+                console.error("❌ Email Error:", err.message);
+            });
 
     } catch (error) {
 
@@ -44,5 +45,6 @@ exports.createContact = async (req, res) => {
             success: false,
             message: "Internal Server Error"
         });
+
     }
 };
